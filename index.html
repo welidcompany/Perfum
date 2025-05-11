@@ -130,22 +130,36 @@
     </form>
   </div>
   <script>
-    let pending = {};
-    function buyProduct(name, price, imgSrc) {
-      pending = {name,price,imgSrc};
-      document.getElementById('product-list').style.display='none';
-      const chk = document.getElementById('checkout-container');
-      document.getElementById('chkImg').src=imgSrc;
-      document.getElementById('chkName').textContent=name;
-      document.getElementById('chkPrice').textContent=price+' أوقية جديدة';
-      chk.style.display='block';
-      window.scrollTo(0,0);
-    }
-    document.getElementById('checkoutForm').addEventListener('submit', e => {
-      e.preventDefault();
-      document.getElementById('checkout-container').innerHTML =
-        '<div class="message">تم إرسال الطلب بنجاح<br>سيتم التواصل معك قريبًا</div>';
-    });
+    <script>
+let pending = {};
+function buyProduct(name, price, imgSrc) {
+  pending = { name, price, imgSrc };
+  document.getElementById('product-list').style.display = 'none';
+  const chk = document.getElementById('checkout-container');
+  document.getElementById('chkImg').src = imgSrc;
+  document.getElementById('chkName').textContent = name;
+  document.getElementById('chkPrice').textContent = price + ' أوقية جديدة';
+  chk.style.display = 'block';
+  window.scrollTo(0, 0);
+}
+
+document.getElementById('checkoutForm').addEventListener('submit', e => {
+  e.preventDefault();
+  // حفظ الطلب
+  const order = {
+    whatsapp: document.getElementById('whatsapp').value.trim(),
+    product: pending.name,
+    quantity: document.getElementById('quantity').value
+  };
+  const arr = JSON.parse(localStorage.getItem('orders') || '[]');
+  arr.push(order);
+  localStorage.setItem('orders', JSON.stringify(arr));
+
+  // عرض رسالة النجاح فقط دون أي أزرار
+  document.getElementById('checkout-container').innerHTML =
+    '<div class="message">تم إرسال الطلب بنجاح<br>سيتم التواصل معك قريبًا</div>';
+});
+</script>
   </script>
 </body>
 </html>
